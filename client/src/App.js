@@ -7,22 +7,38 @@ class App extends Component {
     response: '',
     post: '',
     responseToPost: '',
+    token: ''
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err))
+    // this.callApi()
+    //   .then(res => this.setState({ response: res.express }))
+    //   .catch(err => console.log(err))   
+
+    this.getSpotifyToken()
+    .then((resp) => {
+      this.setState({token: resp.token})
+    })
+    .catch(err => console.log(err))
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/hello')
+  getSpotifyToken = async () => {
+    const response = await fetch('/spotifyToken')
     const body = await response.json()
 
     if (response.status !== 200) throw Error(body.message)
 
     return body
   }
+
+  // callApi = async () => {
+  //   const response = await fetch('/api/hello')
+  //   const body = await response.json()
+
+  //   if (response.status !== 200) throw Error(body.message)
+
+  //   return body
+  // }
 
   handleSubmit = async e => {
     e.preventDefault()
